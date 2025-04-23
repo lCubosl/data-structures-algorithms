@@ -69,4 +69,57 @@ end_time = time.time()
 
 print("result: ", result)
 print("time: ", round(end_time - start_time, 2), "s")
+print("--------------------------------------------------")
 
+# time complexity (common complexities)
+# O(1) Contstant 
+# O(logn) Logarithmic
+# O(n) Linear
+# O(n logn) 
+# O(n^2) Quadratic
+# O(n^3) Cubic
+
+# Constant: If algo has no loops and executes the same steps idnependent of the input
+# O(1)
+def middle(numbers):
+  n = len(numbers)
+  return numbers[n // 2]
+
+# single loop
+# Linear: Single Loop that goes through all elements of the input ONLY ONCE
+# O(n)
+def calc_sum(numbers):
+  result = 0
+  for x in numbers:
+    result += x
+  return result
+
+# Nested loops
+# Quadratic: If algorithm contains loop inside a loop, each of each goes through all elements of the input
+# O(n^2)
+def has_sum(numbers, x):
+  for a in numbers:
+    for b in numbers:
+      if a + b == x:
+        return True
+  return False
+
+# Sequential code segments
+# If the agorithm consists of multiple code segments in sequence, the time complexity is the maximum 
+# of the segment time complexities
+# O(n)
+
+def count_min(numbers):
+  min_val = numbers[0]
+  for x in numbers:
+    if x < min_val:
+      min_val = x
+    
+  result = 0
+  for x in numbers:
+    if x == min_val:
+      result += 1
+  
+  return result
+
+  
