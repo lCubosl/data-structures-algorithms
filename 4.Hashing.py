@@ -183,3 +183,86 @@ def find_mode(numbers):
 print("mode:", find_mode([1,2,3,2,2,3,2,2]))
 print("mode:", find_mode([1,2,3,4,4,3,4,1,2]))
 print("--------------------------------------------------")
+# since dictionary operations take O(1) time, complexity of algorithm is O(n)
+# for loop takes O(n). Nested in it, we are looking into the count dictionary O(1)
+# O(n) x O(1) = O(n x 1) = O(n)
+
+# here is another way to implement the same code
+def find_mode(numbers):
+  count = {}
+  mode = (0, 0)
+
+  for n in numbers:
+    if n not in count:
+      count[n] = 0
+    count[n] += 1
+
+    mode =  max(mode, (count[n], n))
+  return mode[1]
+
+print("mode:", find_mode([1,2,3,2,2,3,2,2]))
+print("mode:", find_mode([1,2,3,4,4,3,4,1,2]))
+print("--------------------------------------------------")
+
+# Example: Rounds
+# You are given a list that contains the numbers 1,2,..., n in some order. Your task is to collect all 
+# the numbers in order form smallest to largest so taht in each round you go through the list from left 
+# to right. How many rounds do you need?
+# list = [3,6,1,7,5,2,4,8], rounds=4
+
+# solution list (dictionary)
+def count_rounds(numbers):
+  n = len(numbers)
+  rounds = 1
+  for i in range(1, n):
+    if numbers.index(i+1) < numbers.index(i):
+      rounds += 1
+  return rounds
+
+print("list = [3,6,1,7,5,2,4,8], expected: 4, output:", count_rounds([3,6,1,7,5,2,4,8]))
+print("--------------------------------------------------")
+# algorithm is slow. Going through the list takes O(n) and the index takes an aditional O(n)
+# O(n) x O(n) = O(n^2)
+
+# Efficient solution
+def count_rounds(numbers):
+  n = len(numbers)
+  pos = {}
+  for i, x in enumerate(numbers):
+    pos[x] = i
+  
+  rounds = 1
+  for i in range(1, n):
+    if pos[i + 1] < pos[i]:
+      rounds += 1
+  return rounds
+
+print("list = [3,6,1,7,5,2,4,8], expected: 4, output:", count_rounds([3,6,1,7,5,2,4,8]))
+print("--------------------------------------------------")
+# now, locating numbers only takes O(1). Each of the loops takes O(n) but they are separate loops
+# O(n) time
+
+# Example: Playlist
+# You are given a play list, where each song is represented by an integer. Your task is to find 
+# out how long is the longest part of the play list that contains no song twice
+# example: playlist = [1,2,1,3,5,3,2,1], answer = 5
+
+# song   | 1 2 1 3 5 4 3 1
+# length | 1 2 2 3 4 5 3 4
+
+def max_length(songs):
+  pos = {}
+  start = 0
+  length = 0
+
+  for i, song in enumerate(songs):
+    if song in pos:
+      start = max(start, pos[song] + 1)
+    length = max(length, i - start + 1)
+    pos[song] = i
+  
+  return length
+
+print("expected: 4, outuput:", max_length([1,2,1,3,5,3,2,1]))
+print("--------------------------------------------------")
+# O(n) time complexity since pos is a dictionary that takes O(1) and the loop takes O(n) time
