@@ -266,3 +266,74 @@ def max_length(songs):
 print("expected: 4, outuput:", max_length([1,2,1,3,5,3,2,1]))
 print("--------------------------------------------------")
 # O(n) time complexity since pos is a dictionary that takes O(1) and the loop takes O(n) time
+
+# Example: List Sums
+# You are given a list containing $n$ integers. Your task is to count how many sublists of the list have
+# x as the sum of its elements
+# list = [2,3,5,-3,4,4,6,2], x = 5, answer = 4
+
+# index   | 0  1  2  3  4  5  6  7
+# num     | 2  3  5 -3  4  4  6  2
+# pfx sum | 2  5 10  7 11 15 21 23
+
+# if we have a and b, we can get the result by subtracting the prefix sum at a-1 with b
+# ex: b=15, a=7 a-1=10, b-(a-1)=5 -> [-3,4,4]
+def count_sublists(nums, x):
+  count = {0:1}
+  prefix_sum = 0
+  result = 0
+
+  for i in range(len(nums)):
+    prefix_sum += nums[i]
+    if prefix_sum - x in count:
+      result += count[prefix_sum - x]
+    
+    if prefix_sum not in count:
+      count[prefix_sum] = 0
+    count[prefix_sum] += 1
+  return result
+
+print("expected: 4, output:", count_sublists([2,3,5,-3,4,4,6,2], 5))
+print("--------------------------------------------------")
+# the dictionary count is usef for sorting how many times each prefix sum has occured. With the dict,
+# we can find out how many earlier prefix sum has occured.
+# O(n) time complexity
+
+# How does hashing work
+# Which objects can be hashed?
+# this code does not work in python
+def this_doesnt_work():
+  lists = set()
+  lists.add([1,2,3]) # typeError: unhashable type: "list"
+
+  print(hash([1,2,3])) # typeError: unhashable type: "list"
+# hash values can only be computed for immutable objects. Lists are not immutable since the can be
+# changed using operations like "append()"
+
+# Imutable objects include numbers, strings, tuples...
+lists = set()
+lists.add((1,2,3))
+
+lists = {}
+lists["apina"] = [1,2,3]
+
+# Hashing for your own class
+# you can apply hashing to your own class by deffining the following mehtods
+  # __hash__ - returns the hash value of the object
+  # __eq__ - compares if two objects have identical content
+
+class Location:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+    print(self.x, self.y)
+  def __hash__(self):
+    return hash((self.x, self.y))
+  def __eq__(self, other):
+    return(self.x, self.y) == (other.x, other.y)
+
+locations = set()
+locations.add(Location(1, 2))
+locations.add(Location(3, -5))
+locations.add(Location(1, 4))
+print("--------------------------------------------------")
