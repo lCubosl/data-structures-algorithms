@@ -61,6 +61,7 @@ b = Stack()
 a.push(1)
 b.push(2)
 print(a.top())
+print("--------------------------------------------------")
 # the stack is shares by all objects created form the class.
 # since the stack is shared, push puts both 1 and 2 into the same stack even though they are 2 different
 # variables
@@ -85,6 +86,7 @@ s.push(1)
 s.push(2)
 s.push(3)
 print(s)
+print("--------------------------------------------------")
 
 # another feature missing. We cannot determine the size of the stack with the function len(). We can fix
 # this by adding a mehtod __len__
@@ -108,6 +110,7 @@ s.push(1)
 s.push(2)
 s.push(3)
 print(len(s))
+print("--------------------------------------------------")
 
 # additionaly, pop and top don't have error handling for cases where the list is empty
 class Stack:
@@ -145,3 +148,34 @@ class Stack:
   # top(): access the element at the top of the stack
   # pop(): remove the element at the top of the stack
 # time complexity of each method should be O(1)
+class SuperStack:
+  def __init__(self):
+    self.stack = []
+
+  def push(self, x):
+    self.stack.append((1, x))
+  
+  # this method has a loop, taking O(n) time. We want O(1)
+  def push_many(self, k, x):
+    self.stack.append((k, x))
+
+  def top(self):
+    return self.stack[-1][1]
+  
+  def pop(self):
+    last = self.stack[-1]
+    if last[0] == 1:
+      self.stack.pop()
+    else:
+      self.stack[-1] = (last[0] - 1, last[1])
+  
+  def __repr__(self):
+    return str(self.stack)
+
+s = SuperStack()
+s.push_many(3, 8)
+s.push(4)
+s.push(4)
+s.push_many(2, 5)
+print(s)
+print("--------------------------------------------------")
