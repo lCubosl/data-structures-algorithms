@@ -127,3 +127,53 @@ tree = Node(1, [Node(4, [Node(3), Node(7)]),
 
 count_nodes(tree)
 print("--------------------------------------------------")
+
+# other values related to trees can be computed using the same aproach.
+# define some vars, iterate through children recursively, and update vars
+
+# the following function computes height of the tree (max depth of any node).
+def count_height(node):
+  result = 0
+  for child in node.children:
+    result = max(result, count_height(child) + 1)
+  print(result)
+  return result
+
+tree = Node(1, [Node(4, [Node(3), Node(7)]),
+                Node(5),
+                Node(2, [Node(6)])])
+
+count_height(tree)
+print("--------------------------------------------------")
+
+# Computing dephts
+# sometime it is useful to add a param to the recursive funtion to keep
+# track of the depth of a node
+# the following function prints out the depth of every node
+def traverse(node, depth):
+  print("node:", node, "depth:", depth)
+  for child in node.children:
+    traverse(child, depth + 1)
+
+tree = Node(1, [Node(4, [Node(3), Node(7)]),
+                Node(5),
+                Node(2, [Node(6)])])
+
+traverse(tree, 0)
+print("--------------------------------------------------")
+
+# lets design a more complicated function get_depths that returns the 
+# node depths as a list ordered from the smallest to the biggest depth.
+# with the example tree, the function should return the list [0,1,1,1,2,2,2]
+# a good way to implement a function like this is to define a helper
+# function that has more parameters
+def get_depths(node):
+  depths = []
+  get_depths_helper(node, 0, depths)
+  return sorted(depths)
+
+def get_depths_helper(node, depth, depths):
+  depths.append(depth)
+  for child in node.children:
+    get_depths_helper(child, depth + 1, depths)
+  
