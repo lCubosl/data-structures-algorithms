@@ -318,6 +318,7 @@ print("--------------------------------------------------")
 # node represents a board obtained by modifying the board of its parent by adding one more queen to an 
 # empty row.
 # by traversing the board, we will find all valid solutions
+queens = "queens-tree-map.png"
 
 def count_queens(n):
   return count(n, 0, [])
