@@ -299,6 +299,7 @@ staff = Employee("Emilia",
                  ])
 
 list_employees(staff)
+print("--------------------------------------------------")
 
 # Example: Queens
 # a systematic iteration of possible solution to a problem can often be seen as a long traversal of a tree.
@@ -312,3 +313,43 @@ list_employees(staff)
 # - - - Q     Q - - -
 # Q - - -     - - - Q
 # - - Q -     - Q - -
+
+# we can solve the task by traversing a tree, where the root represents the empty board. Each non-root
+# node represents a board obtained by modifying the board of its parent by adding one more queen to an 
+# empty row.
+# by traversing the board, we will find all valid solutions
+
+def count_queens(n):
+  return count(n, 0, [])
+
+def count(n, row, queens):
+  if row == n:
+    return 1
+  result = 0
+  for col in range(n):
+    attacks = [attack(queen, (row, col)) for queen in queens]
+    if not any(attacks):
+      result += count(n, row + 1, queens + [(row, col)])
+  return result
+
+def attack(queen1, queen2):
+  if queen1[0] == queen2[0] or queen1[1] == queen2[1]:
+    return True
+  if abs(queen1[0] - queen2[0]) == abs(queen1[1] - queen2[1]):
+    return True
+  return False
+
+print(count_queens(4))
+print(count_queens(8))
+print("--------------------------------------------------")
+# count: 3 parameters - size of the board(n), the empty row, the list of queens already placed in the board
+# rows and cols are numbered 0, n-1. Queens represented as pairs (x: column,y: row)
+# function goes through all the cols, checks if a new queen can be placed at the col without attacking
+# other queens. If it can, precesses that placement recursively
+
+# attack handles attack checks. 
+# The 1st condition checks if queens are in the same row/col
+# 2nd condition checks if queens attack each other diagonaly
+# The function any in the code returns True if the given list contains True at least  once.
+# "not any(attacks)" menas that the list attacks contains only False values, that the new queen attacks 
+# none of the previously placed queens
