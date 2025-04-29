@@ -177,3 +177,138 @@ def get_depths_helper(node, depth, depths):
   for child in node.children:
     get_depths_helper(child, depth + 1, depths)
   
+tree = Node(1, [Node(4, [Node(3), Node(7)]),
+                Node(5),
+                Node(2, [Node(6)])])
+
+print(get_depths(tree))
+print("--------------------------------------------------")
+# function creates a list depths for storing the depths. then the function calls the helper function that 
+# adds all the depths to the lists. FInally the function get_depths sorts and returns the list
+
+# another way to implement the two functions.
+def get_depths(node):
+  return sorted(get_depths_helper(node, 0))
+
+def get_depths_helper(node, depth):
+  depths = [depth]
+  for child in node.children:
+    depths += get_depths_helper(child, depth + 1)
+  return depths
+
+tree = Node(1, [Node(4, [Node(3), Node(7)]),
+                Node(5),
+                Node(2, [Node(6)])])
+
+print(get_depths(tree))
+print("--------------------------------------------------")
+# now the function get_depths_helper creates a list initialy containg the depth of the current node.
+# then the function computes the lists for the child subtrees recusively and adds those lists into its own
+# "get_depths" get the list of depths from the helper func and returns it in sorted order
+
+# Improving the class
+
+class Node:
+  def __init__(self, value, children=[]):
+    self.value = value
+    self.children = children
+  
+  def __repr__(self):
+    return str(self.value)
+# as we have seen, the class works well in many cases, but there is feature of python that can cause
+# problems in some cases. Lets see the example bellow
+node1 = Node(1)
+node2 = Node(2)
+
+node1.children.append(node2)
+
+print(node1.children)
+print(node2.children)
+print("--------------------------------------------------")
+# created 2 nodes and add node 2 as child of node 1. This has the effect of adding the node 2 as
+# its own child too.
+# this is because of the defualt parameter [] which is created once and shared between all calls
+# of the method.Both nodes refer to the same empty list and any additions are seen by both nodes
+
+# fix
+class Node:
+  def __init__(self, value, children=None):
+    self.value = value
+    self.children = children if children  else []
+  
+  def __repr__(self):
+    return str(self.value)
+  
+node1 = Node(1)
+node2 = Node(2)
+
+node1.children.append(node2)
+
+print(node1.children)
+print(node2.children)
+print("--------------------------------------------------")
+
+# issue 2: printing a node, prints only the value and no information about the children
+tree = Node(1, [Node(2), [Node(3), Node(4)], Node(5)])
+print(tree)
+print("--------------------------------------------------")
+
+# __repr__ should return a string that can be used for constructing the object. This is not the case with
+# the above method __repr__
+
+# fix:
+class Node:
+  def __init__(self, value, children=None):
+    self.value = value
+    self.children = children if children else []
+  
+  def __repr__(self):
+    if self.children == []:
+      return f"Node({self.value})"
+    else:
+      return f"Node({self.value}, {self.children})"
+    
+tree = Node(1, [Node(2), [Node(3), Node(4)], Node(5)])
+print(tree)
+print("--------------------------------------------------")
+
+# Example: Employes
+# Trees can be used for representing hierarchical structures. Ex, the personel structure of an organization
+# could be represented as a tree, where each employee is a node, and the children of the node are 
+# the subordinates of the employee
+# the following class can be used for storing the name of an employee and a list of the 
+# employees subordinates.
+class Employee:
+  def __init__(self, name, subordinates=[]):
+    self.name = name
+    self.subordinates = subordinates
+  
+  def __repr__(self):
+    return self.name
+  
+def list_employees(employee, level=0):
+  print(" "*(level*4), employee)
+  for subordinate in employee.subordinates:
+    list_employees(subordinate, level + 1)
+
+staff = Employee("Emilia",
+                 [
+                   Employee("Antti"),
+                   Employee("Leena", [Employee("Jussi")]),
+                   Employee("Matti", [Employee("Sasu")])
+                 ])
+
+list_employees(staff)
+
+# Example: Queens
+# a systematic iteration of possible solution to a problem can often be seen as a long traversal of a tree.
+# this technique of solving a problem is known as backtracking. Let us consider the following problme
+
+# how many ways can you place n queens on an n x n chess board so that no two queens attack each other?
+# two queens attack each other if they are on the same row, col or diagonal
+
+# ex: n = 4, there are 2 solutions
+# - Q - -     - - Q -
+# - - - Q     Q - - -
+# Q - - -     - - - Q
+# - - Q -     - Q - -
