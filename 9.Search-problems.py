@@ -157,3 +157,132 @@ print("--------------------------------------------------")
 
 # time complexity: O(2^n x n) because it goes through 2n parenthesis sequences and the checking of each
 # sequences takes O(n)
+
+# Speeding up the search
+# the 2 preceding examples implement the search by generating all solutions and checking each solution.
+# it works but does a lot of  unnecessary work in processing invalid solutions
+
+# let us consider balanced parenthesis sequence. Many of the sequences are invalid at the beggining
+# since they start with ")", eliminating half of the sequences.
+# when n=20, the alg goes through 2^20 = 1048576 sequences, but about only 16796 or 1/60 are valid
+
+# another factor slowing down algs: even though we only need to count the solutions, the alg actually 
+# constructs all solutions. 
+
+# more efficient al for counting parenthesis
+def count_sequences(n, d=0):
+  if d < 0 or d > n:
+    return 0
+  if n == 0:
+    return 1
+  return count_sequences(n-1, d+1) + count_sequences(n-1, d-1)
+
+print(count_sequences(6))
+print("--------------------------------------------------")
+# this function doesnt use the module itertools to construc solutions, but iterates through the solutions 
+# directly using recursion. 
+# the parameter (n) tells how many additional symbols are still needed and the parmeter (d) mantains the
+# parenthesis depth of the current sequence (0) at the begining, when the sequence is empty
+# in each step, there are 2 possibilities ")" and "("
+# ")": decreases the depth
+# "(": increases the depth
+
+# each step checks if the current sequence can still lead to valid solution. if it becomes negative (d<0),
+# or de depth is greater than the number of remaining symbols, (d>n), the sequence automaticaly returns 0
+# if all symbols have been added and n==0, it returns 1
+
+# Greedy algorithms
+# efficient method for finding an optimal solution without going through all possible solutions. greedy
+# algs are often simple but their correctness can be difficult to justify
+
+# You have access to an unbouded number of coins with values 1,2 and 5. what is the minimum number of 
+# coins needed to form the sum x
+# x=13, answer=13 (1,2,5,5)
+
+def find_coins(x):
+  solutions = [[]]
+
+  for solution in solutions:
+    if sum(solution) == x:
+      print(solution)
+      return len(solution)
+    for coin in [1,2,5]:
+      solutions.append(solution + [coin])
+
+print(find_coins(13))
+print("--------------------------------------------------")
+# the function returns the first combination summing up to x, returning the size
+
+# the function 1st goes through all combinations of 1 coin, 2 coins, 3 coins and finally, at 4 coins, it
+# discovers [1,2,5,5] that sum up to 13.
+
+# correct algorithm but needs a  lot of time when the number needed is large
+
+# using greedy algs, that go through the coin values from largest to smallest can be a better and faster
+# solution.
+def find_coins(x):
+  count = 0
+  for coin in [5,2,1]:
+    while coin <=x:
+      x -= coin
+      count += 1
+  return count
+
+print(find_coins(13))
+print("--------------------------------------------------")
+# this alg is efficient because it does not iterate through all solutions but constructs an optimal 
+# solution.
+
+# Why the algorithm is correct
+# when designing a greedy alg, it cna be difficult to justify that the alg computes an optimal
+# solution in all cases. Greedy algs don't go through all solutions and there is risk that the 
+# constructed solution is not optimal 
+
+# how do we know that the greedy alg constructs a solution with the smallest number of coins?
+
+# our greedy alg is correct but if we change our coin values to [1,4,5], it becomes incorrect. It produces
+# [1,1,1,5,5] instead of [4,4,5]
+
+# lets prove that the greedy alg finds an optimal solution when the coin values are 1,2,5. assume that 
+# there is a situation, where the current sum is still at least 5 short of the largest sum, but it is 
+# incorrect to add more coins of value 5. the remaining sum must be achieved by using the coins of value 
+# 1 and 2 at least 3 more coins is needed. but no set of 3 coins 1 or 2 is optimal
+  # 1,1,1 -> 1,2
+  # 1,1,2 -> 2,2
+  # 1,2,2 -> 5
+  # 2,2,2 -> 1,5
+
+# Algorithm checking
+
+coins = [1,4,5]
+def find_coins_brute(x):
+  solutions = [[]]
+
+  for solution in solutions:
+    if sum(solution) == x:
+      return len(solution)
+    for coin in coins:
+      solutions.append(solution + [coin])
+
+def find_coins_greedy(x):
+  count = 0
+  for coin in reversed(coins):
+    while coin <= x:
+      x -= coin
+      count += 1
+  return count
+
+x = 1
+while True:
+  result_brute = find_coins_brute(x)
+  result_greedy = find_coins_greedy(x)
+
+  if result_brute != result_greedy:
+    print("different answer for", x, "coins")
+    print("brute:", result_brute)
+    print("greedy:", result_greedy)
+    break
+
+  x += 1
+
+# x=8 is the smallest case, where the greedy alg produces an incorrect answer, for the coin vals [1,4,5]
