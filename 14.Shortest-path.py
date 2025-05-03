@@ -162,3 +162,164 @@ d.add_edge(4, 5, 3)
 distances = d.find_distances(1)
 print(distances) # {1: 0, 2: 4, 3: 1, 4: 3, 5: 6}
 print("--------------------------------------------------")
+
+# in each step, dijkstra's alg sleects the node with the smallest distance. the distance to the selected
+# node should not change since it will not be selected again
+
+# the alg reliest on the assumption that there are no negative edge weights. When  a node with the smallest
+# distance is selected, all the remaining distances on the heap are greater or equal, therefore, no later
+# distance update can produce a smaller distance, and the distance to the selected node will not change
+
+# time complexity O(n + m logm)
+  # O(n): iterating through nodes
+  # O(m logm): at most, one element is added to the heap for each edge.
+    # O(m): heap operations
+    # O(logm): each heap operation needs O(logm) time
+
+# Dijkstra's alg can produce incorrect results if the graph has negative edges
+d = Dijkstra([1, 2, 3, 4])
+
+d.add_edge(1, 2, 3)
+d.add_edge(2, 3, -4)
+d.add_edge(1, 3, 1)
+d.add_edge(3, 4, 1)
+
+distances = d.find_distances(1)
+print(distances) # [0, 3, -1, 2]
+print("--------------------------------------------------")
+
+# shortest path 1 to 4 should have length 0 (1-2-3-4 w/ length 3-4+1=0)
+# the alg selects node 3, with distance 1, which updates the distance to node 4 to 2. later, the distance
+# to 3 is updated to -1, due to the negative edge, but since the node has already been marked as visited,
+# its not processed again and the distance to 4 doesnt get updated
+
+# Constructing shortest paths
+# Besides the 2 algs already studied, we can construct a shortest path from a start to an end node, by
+# augmenting each distance with the edge that caused the update to its current value. then, we can
+# compute the path to each node by walking the path backwards
+
+# Bellman-Ford alg returning shortest path instead of distances
+class BellmanFordSP:
+  def __init__(self, nodes):
+    self.nodes = nodes
+    self.edges = []
+
+  def add_edge(self, node_a, node_b, weight):
+    self.edges.append((node_a, node_b, weight))
+
+  def shortest_path(self, start_node, end_node):
+    distances = {}
+    for node in self.nodes:
+      distances[node] = float("inf")
+    distances[start_node] = 0
+    previous = {}
+    previous[start_node] = None
+
+    for _ in range(len(self.nodes) - 1):
+      for edge in self.edges:
+        node_a, node_b, weight = edge
+        new_distance = distances[node_a] + weight
+        if new_distance < distances[node_b]:
+          distances[node_b] = new_distance
+          previous[node_b] = node_a
+    
+    if distances[end_node] == float("inf"):
+      return None
+    
+    path = []
+    node = end_node
+    while node:
+      path.append(node)
+      node = previous[node]
+
+    path.reverse()
+    return path
+  
+b = BellmanFordSP([1, 2, 3, 4, 5])
+
+b.add_edge(1, 2, 8)
+b.add_edge(1, 3, 1)
+b.add_edge(2, 5, 5)
+b.add_edge(3, 2, 4)
+b.add_edge(3, 4, 2)
+b.add_edge(4, 2, 1)
+b.add_edge(4, 5, 3)
+
+path = b.shortest_path(1, 5)
+print(path) # [1, 3, 4, 5]
+print("--------------------------------------------------")
+
+# Floyd-Warshall algorithm
+# finds the distances between all pairs of ndoes at the same time rather than just the distances from 
+# a single start node. works for any graph as long as there are no negative cycles
+
+# represents the graph using an adjacency matrix, where the element on row a and colmn b stores the weight 
+# of the edge from the node a to the node b. If a=b, the weight is 0, if there is no edge from the  node a
+# to the node b, the weight is INFINITY
+shortest_path= "shortest-path.png"
+
+# the graph can be represented as the following adjacency matrix (" = INFINITY)
+#   | 1 | 2 | 3 | 4 | 5
+# 1 | 0 | 8 | 1 | " | "
+# 2 | " | 0 | " | " | 5
+# 3 | " | 4 | 0 | 2 | "
+# 4 | " | 1 | " | 0 | 3
+# 5 | " | " | " | " | 0
+
+# main part of the algorithms consists of three nested loops.
+  # first loop: chooses a middle node k
+  # second and third: choose a start node and a end node
+# then, the alg checks if the distance from the start node to end node can be shortened using a path
+# that goes through the midle node
+class FloydWarshall:
+  def __init__(self, nodes):
+    self.nodes = nodes
+    self.graph = {}
+    for a in self.nodes:
+      for b in self.nodes:
+        distance = 0 if a == b else float("inf")
+        self.graph[(a,b)] = distance
+
+  def add_edge(self, a, b, w):
+    self.graph[(a,b)] = min(self.graph[(a,b)], w)
+  
+  def find_distances(self):
+    distances = self.graph.copy()
+
+    for k in self.nodes:
+      for a in self.nodes:
+        for b in self.nodes:
+          distance = min(distances[(a,b)],
+                         distances[(a,k)] + distances[(k,b)])
+          distances[(a,b)] = distance
+    
+    return distances
+  
+# implementation
+f = FloydWarshall([1, 2, 3, 4, 5])
+f.add_edge(1, 2, 8)
+f.add_edge(1, 3, 1)
+f.add_edge(2, 5, 5)
+f.add_edge(3, 2, 4)
+f.add_edge(3, 4, 2)
+f.add_edge(4, 2, 1)
+f.add_edge(4, 5, 3)
+distances = f.find_distances()
+print(distances[(1, 4)]) # 3
+print(distances[(2, 1)]) # inf
+print(distances[(3, 5)]) # 5
+print("--------------------------------------------------")
+# for each three nodes k,a,b, the mehtod checks if going from a to k to b is shorter than going directly 
+# from a to b using the current distances. If it is, the distance from a to b is updated
+
+# Algorithm analysis
+# the algorithm processes the node k (intermediate), and all othter intermediate nodes are in range
+# 1,...., k-1. since k goes trhough all values 1,2,...,n, the distances at the end are the lengths of
+# the shortest paths.
+
+# since there are three nested loops, the alg is time complex of O(n^3)
+
+# Utility
+# Dijkstra's alg: good for finding shortest paths. is efficient. doesn not work with negative edges
+# Bellman-Ford alg: works with negative edges but not negative cycles. alg is slow for large graphs
+# Floyd-Warshall: distances are needed for ALL pairs of nodes
