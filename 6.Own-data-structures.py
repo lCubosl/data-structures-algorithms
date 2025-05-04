@@ -109,7 +109,7 @@ s = Stack()
 s.push(1)
 s.push(2)
 s.push(3)
-print(len(s))
+print("method len", len(s))
 print("--------------------------------------------------")
 
 # additionaly, pop and top don't have error handling for cases where the list is empty

@@ -149,7 +149,7 @@ def count_occurence(items):
       count[x] = 0
     count[x] += 1
   return count
-print(count_occurence([1,2,3,4,4,3,4,1,2]))
+print("count occurence", count_occurence([1,2,3,4,4,3,4,1,2]))
 print("--------------------------------------------------")
 
 # position of occurence
@@ -159,7 +159,7 @@ def position_occurence(items):
   for i, x in enumerate(items):
     pos[x] = i
   return pos
-print(position_occurence([1,2,3,4,4,3,4,1,2]))
+print("position of occurence",position_occurence([1,2,3,4,4,3,4,1,2]))
 print("--------------------------------------------------")
 
 # example Mode
