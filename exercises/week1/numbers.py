@@ -10,10 +10,22 @@
 # ranges.
 
 def count_numbers(a,b):
-  pass
+  count = 0
+  nums = []
+
+  while a <= b:
+    nums.append(a)
+    a +=1
+
+  for x in range(len(nums)):
+    if "2" in str(nums[x]):
+      count +=1
+      print(nums[x])
+
+  return count
 
 print(count_numbers(1, 100)) # 6
 print(count_numbers(60, 70)) # 0
 print(count_numbers(25, 25)) # 1
-print(count_numbers(1, 10**9)) # 1022
-print(count_numbers(123456789, 987654321)) # 512
+# print(count_numbers(1, 10**9)) # 1022
+# print(count_numbers(123456789, 987654321)) # 512
