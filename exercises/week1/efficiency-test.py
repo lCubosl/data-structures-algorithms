@@ -35,4 +35,5 @@ resulut = count_even2(numbers)
 end_time = time.time()
 
 print("result:", resulut)
+print(numbers)
 print("time:", round(end_time - start_time, 3), "s")
