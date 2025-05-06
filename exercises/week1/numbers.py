@@ -18,14 +18,18 @@ def count_numbers(a,b):
     a +=1
 
   for x in range(len(nums)):
-    if "2" in str(nums[x]):
-      count +=1
-      print(nums[x])
+    digits = set(str(nums[x]))
+    if digits == {"2"}:
+      count += 1
+    elif digits == {"5"}:
+      count += 1
+    elif digits == {"2", "5"}:
+      count += 1
 
   return count
 
 print(count_numbers(1, 100)) # 6
 print(count_numbers(60, 70)) # 0
 print(count_numbers(25, 25)) # 1
-# print(count_numbers(1, 10**9)) # 1022
-# print(count_numbers(123456789, 987654321)) # 512
+print(count_numbers(123456789, 987654321)) # 512
+print(count_numbers(1, 10**9)) # 1022
