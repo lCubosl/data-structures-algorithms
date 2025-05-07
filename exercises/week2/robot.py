@@ -104,7 +104,6 @@ rules.append(("1", 3, "1", 3, "LEFT"))
 rules.append(("X", 3, "X", 3, "LEFT"))
 
 #print(rules)
-
 print(calculate("0", rules)) # False
 print(calculate("00", rules)) # False
 print(calculate("01", rules)) # True
