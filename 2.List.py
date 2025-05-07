@@ -147,7 +147,7 @@ def double(numbers):
 
 numbers = [1, 2 ,3, 4]
 print(numbers)
-print(double(numbers))
+print("double numbers:",double(numbers))
 print(numbers)
 print("--------------------------------------------------")
 # since only the reference is copied, the function changes the list it got as a parameter
