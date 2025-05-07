@@ -36,7 +36,7 @@ def best_profit(prices):
     min_price = min(prices[:i+1])
     best = max(best, prices[i] - min_price)
   return best
-print("best profit:", best_profit([3,7,5,1,4,6,2,3]))
+print("(not the most efficient) best profit:", best_profit([3,7,5,1,4,6,2,3]))
 print("--------------------------------------------------")
 # this algorithm only has one loop but its still not efficient.
 # the first for loop scans though all of the elements in the list O(n)
@@ -50,7 +50,7 @@ def best_profit_fast(prices):
     min_price = min(min_price, prices[i])
     best = max(best, prices[i] - min_price)
   return best
-print("best profit:", best_profit_fast([3,7,5,1,4,6,2,3]))
+print("(the most performant) best profit:", best_profit_fast([3,7,5,1,4,6,2,3]))
 print("--------------------------------------------------")
 # we can fix this by computing min_price outside of the for loop making the algorithm O(n) time complex
 

@@ -32,5 +32,5 @@ print(count_sublists([4, 3, 2, 1])) # 4
 print(count_sublists([1, 1, 1, 1])) # 4
 print(count_sublists([1, 2, 1, 2])) # 6
 
-# numbers = list(range(1, 10**5+1))
-# print(count_sublists(numbers)) # 5000050000
+numbers = list(range(1, 10**5+1))
+print(count_sublists(numbers)) # 5000050000
