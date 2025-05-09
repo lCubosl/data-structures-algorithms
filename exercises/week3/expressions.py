@@ -16,22 +16,67 @@
 # quickly in this test case too.
 
 def evaluate(data):
-  if "add" in data:
-    values = [int(char) for char in data if char.isdigit()]
-    return sum(values)
-  if "mul" in data:
-    values = [int(char) for char in data if char.isdigit()]
-    return values[0] * values[1]
-  return data
+  # words variables
+  letters = []
+  temp_word = ""
 
-print(evaluate("add(1,2)")) # 3
-print(evaluate("mul(3,4)")) # 12
-print(evaluate("aybabtu")) # aybabtu
-print(evaluate("mul(6,7),mul(7,191)")) # 42,1337
+  # list that stores words
+  for char in data:
+    if char.isalpha():
+      temp_word += char
+    else:
+      if temp_word:
+        letters.append(temp_word)
+        temp_word = ""  
+  if temp_word:
+    letters.append(temp_word)
+# --------------------------------------
+
+  # numbers variables
+  nums = []
+  temp_nums = ""
+
+  # list that stores numbers
+  for num in data:
+    if num.isdigit():
+      temp_nums += num
+    else:
+      if temp_nums:
+        nums.append(int(temp_nums))
+        temp_nums = ""  
+  if temp_nums:
+    nums.append(int(temp_nums))
+# --------------------------------------
+
+  res = []
+
+  for word in range(len(letters)):
+    if word * 2 + 1 >= len(nums):
+      res.append(letters[word])
+    elif letters[word] == "add":
+      res.append(sum([nums[word*2], nums[(word*2)+1]]))
+    elif letters[word] == "mul":
+      res.append(nums[word*2] * nums[word*2+1])
+    else:
+      res.append(letters[word])
+
+  res_str = "".join(str(s) for s in res)
+  #print(res_str)
+
+  return res_str
+
+print(evaluate("add(1,20)")) # 21 X
+print(evaluate("mul(3,4)")) # 12 X
+print(evaluate("aybabtu")) # aybabtu X
+print(evaluate("mul(6,7),mul(7,191)")) # 42,1337 X
 print(evaluate("abadd(123,456)mulxmul(3,13)")) # ab579mulx39
 print(evaluate("mul()mul(13)mul(0,1)")) # mul()mul(13)mul(0,1)
 
-#data = "mul(6,7)"*10**5
-#result = evaluate(data)
-#print(len(result)) # 200000
-#print(result[:20]) # 42424242424242424242
+data = "mul(6,7)"*10**5
+result = evaluate(data)
+print(len(result)) # 200000 X
+print(result[:20]) # 42424242424242424242 X
+
+# failed 2 cases
+#print(evaluate("abadd(123,456)mulxmul(3,13)")) # ab579mulx39
+#print(evaluate("mul()mul(13)mul(0,1)")) # mul()mul(13)mul(0,1)
