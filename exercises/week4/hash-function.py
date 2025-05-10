@@ -11,8 +11,20 @@
 # In a file hashing.py, implement the function hash_value that returns the hash value of the string given as a 
 # parameter.
 
+# time complexity O(n log n)
 def hash_value(string):
-  pass    
+  # populate charmap {"a":0, "b:1"...}
+  hash = {chr(ord("a") + i): i for i in range(26)}
+  nums = []
+
+  for val in range(1, len(string)+1):
+    letter = string[val-1]
+    number = hash[letter]
+    
+    operation = number * 23**(len(string) - val)
+    nums.append(operation)
+
+  return sum(nums)%(2**32)
 
 print(hash_value("abc")) # 25
 print(hash_value("kissa")) # 2905682
