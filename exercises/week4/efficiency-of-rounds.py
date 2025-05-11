@@ -12,37 +12,54 @@
 # In this task you get a point automatically, when you fill in your results and the code you used, and press the 
 # submit button.
 
-# Running time when using a list:  ANSWER
-# Running time when using a dictionary:  ANSWER
+# Running time when using a list: 27.744 s
+# Running time when using a set:  0.008 s
+# Running time when using a dictionary:  0.014 s
 
 # The code used in the test:
+
+import random
+import time
 
 # list
 def count_distinct_list(numbers):
     seen = []
+    start_time = time.time()
     for x in numbers:
         if x not in seen:
             seen.append(x)
+    end_time = time.time()
+    print("list time:", round(end_time-start_time, 3), "s")
     return seen
 
 # set
 def count_distinct_set(numbers):
     seen = set()
+    start_time = time.time()
     for x in numbers:
         if x not in seen:
             seen.add(x)
+    end_time = time.time()
+    print("set time:", round(end_time-start_time, 3), "s")
     return seen
 
 # dict
 def count_distinct_dict(numbers):
     seen = {}
     count = 0
+    start_time = time.time()
     for x in numbers:
         if x not in seen:
             seen[count] = x
             count += 1
+    end_time = time.time()
+    print("dict time:", round(end_time-start_time, 3), "s")
     return seen
 
-print(count_distinct_list([2,3,5,3,4,4,6,2]))
-print(count_distinct_set([2,3,5,3,4,4,6,2]))
-print(count_distinct_dict([2,3,5,3,4,4,6,2]))
+n = 100000
+#print("n: ", n)
+random.seed(1337)
+
+count_distinct_list([random.randint(1, 10**7) for _ in range(n)])
+count_distinct_set([random.randint(1, 10**7) for _ in range(n)])
+count_distinct_dict([random.randint(1, 10**7) for _ in range(n)])
