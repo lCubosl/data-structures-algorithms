@@ -16,8 +16,28 @@
 
 # The function will be tested in various situations, where the size of the grid is at most 20 \times 20 squares. The 
 # function should be efficient in all such test cases.
+
+# function expects a "count" with how many squares have been traversed and "exit_grid" to check if it has left the grid
 def analyze_route(grid):
-  pass
+  count = 0
+  exit_grid = False
+
+  return(count, exit_grid)
+
+# actual function
+def analyze_route(grid):
+  y = 0
+  visited = set()
+
+  for x in range(len(grid)):
+    y += 1
+    if "R" in grid[x]:
+      visited.add((x,y))
+
+    if (4,4) in visited:
+      print("True")
+          
+  return visited
 
 grid1 = [".#......",
           "..#.....",
