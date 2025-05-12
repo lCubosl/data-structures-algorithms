@@ -24,20 +24,46 @@ def analyze_route(grid):
 
   return(count, exit_grid)
 
+# ------------------------------------------------
 # actual function
 def analyze_route(grid):
-  y = 0
+  n = len(grid)
   visited = set()
 
-  for x in range(len(grid)):
-    y += 1
-    if "R" in grid[x]:
-      visited.add((x,y))
+  start_pos = None
+  for y in range(n):
+    row = grid[y]
+    if "R" in row:
+      x = row.index("R")
+      start_pos = (x, y) # (2,3)
+      visited.add(start_pos)
+      break
+  
+  directions = [(-1,0),(0,1),(1,0),(0,-1)]
+  current_dir = 0
 
-    if (4,4) in visited:
-      print("True")
-          
-  return visited
+  x, y = start_pos # (2,3)
+  visited.add((x, y))
+
+  steps = 0
+  state = False
+  while steps <= 100:
+    dy, dx = directions[current_dir]
+    nx, ny = x + dx, y + dy
+
+    if nx < 0 or ny < 0 or ny >= n or nx >= len(grid[ny]):
+      state = True
+      break
+
+    if grid[ny][nx] == "#":
+      current_dir = (current_dir + 1) % 4
+      continue
+    
+    visited.add((nx,ny))
+    steps += 1
+    x, y = nx, ny
+
+  return len(visited), state
 
 grid1 = [".#......",
           "..#.....",
