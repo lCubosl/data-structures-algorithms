@@ -1,6 +1,6 @@
 # Consider again the hash function of the earlier task:
 
-# (c_0 A^{n-1} + c_1 A^{n-2} \cdots + c_{n-1} A^0) \bmod M
+# (c_0 A^{n-1} + c_1 A^{n-2} ... + c_{n-1} A^0) mod M
 # The parameters are the same as before: A=23 ja M=2^{32}.
 
 # In a file collision.py, implement the function find_other that takes a string as a parameter and returns a different 
@@ -10,12 +10,59 @@
 # same requirements.
 
 # The function should be efficient and return a different string immediately.
+import time
+
+def hash_value1(string):
+  # O(1)
+  hash = {chr(ord("a") + i): i for i in range(26)}
+  nums = []
+  start_time = time.time()
+  # O(n)
+  for val in range(1, len(string)+1):
+    letter = string[val-1]
+    number = hash[letter]
+    
+    operation = number * 23**(len(string) - val)
+    nums.append(operation)
+
+  result = sum(nums)%(2**32)
+  end_time = time.time()
+  # print("hash_value time:", round(end_time-start_time, 3), "s")
+  # total time complexity O(n)
+  return result
+
+def hash_value2(string):
+  hash = {chr(ord("a") + i): i for i in range(26)}
+  MOD = 2**32
+  base = 23
+  result = 0
+  start_time = time.time()
+  for val in string:
+    result = (result * base + hash[val]) % MOD
+  end_time = time.time()
+  # print("find_other time:", round(end_time-start_time, 3), "s")
+  
+  return result
+
+# ----------------------------------------------------------------
 def hash_value(string):
-  # you may insert here the code from the earlier task
-  pass
+  hash = {chr(ord("a") + i): i for i in range(26)}
+  nums = []
+
+  for val in range(1, len(string)+1):
+    letter = string[val-1]
+    number = hash[letter]
+    
+    operation = number * 23**(len(string) - val)
+    nums.append(operation)
+
+  return sum(nums)%(2**32)
 
 def find_other(string):
   pass
+
+# print(hash_value1("kissaabcdefghijklmnopqrstuvwxyz")) # 2905682
+# print(hash_value2("kissaabcdefghijklmnopqrstuvwxyz")) # 2905682
 
 string1 = "kissa"
 string2 = find_other("kissa")
