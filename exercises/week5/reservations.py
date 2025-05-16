@@ -39,8 +39,8 @@ print("expected: True , output:",check_overlapping([(2, 3), (5, 5), (1, 5)])) # 
 
 reservations = [(day, day) for day in range(1, 10**5+1)]
 random.shuffle(reservations)
-#print(check_overlapping(reservations)) # False
+print(check_overlapping(reservations)) # False
 
 reservations.append((42, 1337))
 random.shuffle(reservations)
-#print(check_overlapping(reservations)) # True
+print(check_overlapping(reservations)) # True
