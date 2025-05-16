@@ -16,8 +16,40 @@
 
 # You should implement the function so that it computes the step count efficiently even for long lists. The function should finish immediately in the last test case of the code template too.
 
+# O(n x m)
 def count_steps(numbers):
-  pass
+  ordered = sorted(set(numbers))
+  list_i = []
+  count = 0
+
+  for i, num in enumerate(ordered):
+    idx = numbers.index(num)
+    list_i.append(idx)
+
+    if i > 0 :
+      prev_idx = numbers.index(ordered[i-1])
+      count += abs(idx - prev_idx)
+    else:
+      count = idx
+
+  return count
+
+# O(n)
+def count_steps(numbers):
+  index_map = {num: i for i, num in enumerate(numbers)}
+  ordered = sorted(index_map.keys())
+  
+  count = 0
+  for i, num in enumerate(ordered):
+    idx = index_map[num]
+
+    if i > 0 :
+      prev_idx = index_map[ordered[i - 1]]
+      count += abs(idx - prev_idx)
+    else:
+      count = idx
+
+  return count
 
 print(count_steps([1])) # 0
 print(count_steps([1, 2, 3])) # 2
