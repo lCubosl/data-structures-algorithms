@@ -17,7 +17,17 @@
 import random
 
 def count_nested(intervals):
-  pass
+  intervals.sort()
+  count = 0
+  
+  if len(intervals) <= 1:
+    return 0
+
+  for i in range(1, len(intervals)):
+    if intervals[i][0] < intervals[i-1][1]:
+      count +=1
+
+  return count
 
 print(count_nested([])) # 0
 print(count_nested([(1, 2)])) # 0
