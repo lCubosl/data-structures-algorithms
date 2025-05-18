@@ -17,14 +17,16 @@
 import random
 
 def count_nested(intervals):
-  intervals.sort()
-  count = 0
   
   if len(intervals) <= 1:
     return 0
-
+  
+  # sorts intervals ascending so larger intervals are left and smaller intervals right
+  intervals.sort(key=lambda x: (x[0], -x[1]))
+  count = 0
+  
   for i in range(1, len(intervals)):
-    if intervals[i][0] < intervals[i-1][1]:
+    if intervals[i][0] >= intervals[i-1][0] and intervals[i][1] <= intervals[i-1][1]:
       count +=1
 
   return count
