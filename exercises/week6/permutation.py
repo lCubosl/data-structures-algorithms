@@ -1,4 +1,4 @@
-# A list is a permutation if it contains the numbers 1,2,\dots,n exactly once each. For example, the 
+# A list is a permutation if it contains the numbers 1,2, ..., n exactly once each. For example, the 
 # lists [1], [2,1] and [3,1,2,4] are permutations.
 
 # In a file permutation.py, implement the class PermutationTracker with the following methods:
@@ -8,13 +8,23 @@
 # The time complexity of both methods should be O(1).
 class PermutationTracker:
   def __init__(self):
-    pass
+    self.numbers = []
+    self.seen = set()
+    self.repeated = False
 
   def append(self, number):
-    pass
+    if number in self.seen:
+      self.repeated = True
+    else:
+      self.seen.add(number)
+    self.numbers.append(number)
 
   def check(self):
-    pass
+    if self.repeated:
+      return False
+    
+    n = len(self.numbers)
+    return set(self.numbers) == set(range(1, n+1))
 
 tracker = PermutationTracker()
 
