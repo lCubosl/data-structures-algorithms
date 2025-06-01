@@ -9,13 +9,18 @@
 class RepeatList:
   def __init__(self):
     self.numbers = []
-    self.repeated = None
+    self.seen = set()
+    self.repeated = False
 
   def append(self, number):
-    pass
+    if number in self.seen:
+      self.repeated = True
+    else:
+      self.seen.add(number)
+    self.numbers.append(number)
 
   def repeat(self):
-    pass
+    return self.repeated
 
 numbers = RepeatList()
 
