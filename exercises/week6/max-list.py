@@ -10,13 +10,18 @@
 
 class MaxList:
   def __init__(self):
-    pass  
+    self.numbers = []
+    self.current_max = None  
 
   def append(self, number):
-    pass
+    self.numbers.append(number)
+    # print("numbers:", self.numbers)
+    if self.current_max is None or number > self.current_max:
+      self.current_max = number
+      # print("current-max:", self.current_max)
 
   def max(self):
-    pass
+    return self.current_max
 
 numbers = MaxList()
 
