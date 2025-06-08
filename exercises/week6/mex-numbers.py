@@ -10,13 +10,13 @@
 # In a file mex.py, implement a class Mex according to the following template:
 class Mex:
   def __init__(self):
-    self.numbers = []
     self.seen = set()
     self.mex = 0
 
   def add(self, x):
     self.seen.add(x)
-    #
+    while self.mex in self.seen:
+      self.mex += 1
     return self.mex
 
 m = Mex()
