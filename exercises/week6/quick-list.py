@@ -6,13 +6,19 @@
 # In a file quicklist.py, implement a class QuickList according to the following template:
 class QuickList:
   def __init__(self, t):
-    pass
+    self.numbers = t
+    self.shiftednumbers = []
 
   def move(self, k):
-    pass
+    self.shiftednumbers = self.numbers[k:] + self.numbers[:k]
+    self.numbers = self.shiftednumbers
+    return self.shiftednumbers
 
   def get(self, i):
-    pass
+    if len(self.shiftednumbers) == 0:
+      return self.numbers[i]
+    else:
+      return self.shiftednumbers[i]
 
 q = QuickList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 print(q.get(4)) # 5
