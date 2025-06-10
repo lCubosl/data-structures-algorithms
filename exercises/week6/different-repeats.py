@@ -10,12 +10,18 @@
 class TrackRepeat:
   def __init__(self):
     self.numbers = []
+    self.seen = set()
 
+  # add number in index even, frequency, at index odd
   def add(self, x, k):
-    pass
+    self.numbers.extend([x] * k)
+    self.seen.add(x)
 
   def check(self):
-    pass
+    if len(self.numbers) == 0 or len(self.seen) == 1:
+      return True
+    else:
+      return self.numbers
 
 t = TrackRepeat()
 print(t.check()) # True
