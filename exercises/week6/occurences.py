@@ -18,13 +18,21 @@ class OccurrenceTracker:
   def append(self, number):
     self.numbers.append(number)
 
+  # def count_occurence(items):
+  #   count = {}
+  #   for x in items:
+  #     if x not in count:
+  #       count[x] = 0
+  #     count[x] += 1
+  #   return count
   def count(self):
-    freq = {}
+    count = {}
     for num in self.numbers:
-      freq[num] = freq.get(num, 0) + 1
+      if num not in count:
+        count[num] = 0
+      count[num] +=1    
 
-    counts = set(freq.values())
-    return len(counts)
+    return len(set(count.values()))
 
 tracker = OccurrenceTracker()
 
