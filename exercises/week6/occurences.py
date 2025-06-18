@@ -11,6 +11,7 @@
   # count(): return the number of distinct occurrence counts
 
 # Both methods should work in O(1) time.
+# O(n)
 class OccurrenceTracker:
   def __init__(self):
     self.numbers = []
@@ -33,6 +34,23 @@ class OccurrenceTracker:
       count[num] +=1    
 
     return len(set(count.values()))
+  
+# O(1)
+class OccurrenceTracker:
+  def __init__(self):
+    self.freq = {}
+    # self.freq_count = {}
+    self.numbers = []
+
+  def append(self, number):
+    self.numbers.append(number)
+
+    old_freq = self.freq.get(number, 0)
+    new_freq = old_freq + 1
+    self.freq[number] = new_freq
+
+  def count(self):
+    return len(set(self.freq.values()))
 
 tracker = OccurrenceTracker()
 
