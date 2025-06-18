@@ -39,7 +39,6 @@ class OccurrenceTracker:
 class OccurrenceTracker:
   def __init__(self):
     self.freq = {}
-    # self.freq_count = {}
     self.numbers = []
 
   def append(self, number):
