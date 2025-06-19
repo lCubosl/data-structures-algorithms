@@ -18,27 +18,33 @@
 class DistanceTracker:
   def __init__(self):
     self.numbers = {}
-    self.prefix = {}
+    self.sum_numbers = []
+    self.current_index = 0
 
   def append(self, number):
     index = sum(len(i) for i in self.numbers.values())
 
     if number not in self.numbers:
       self.numbers[number] = []
-      self.prefix[number] = []
     
     self.numbers[number].append(index)
-    print("numbers", self.numbers)
-
-    prev_sum = self.prefix[number][-1] if  self.prefix[number] else 0
-    self.prefix[number].append(prev_sum + index)
-    print("prefix", self.prefix)
+    self.current_index += 1
+    # print("numbers", self.numbers)
 
   def sum(self, number):
-    pass
-    # if number not in self.prefix:
-    #   return 0    
-    # return sum(self.prefix[number])
+    if number not in self.numbers or len(self.numbers[number]) < 2:
+      return 0
+
+    self.sum_numbers = self.numbers[number]
+    sum = 0
+    prefix_sum = 0
+    
+    for i, val in enumerate(self.sum_numbers):
+      sum += val * i - prefix_sum
+      # print("i:",i, "val:",val)
+      prefix_sum += val
+
+    return sum
 
 tracker = DistanceTracker()
 
