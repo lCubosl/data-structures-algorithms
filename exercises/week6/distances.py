@@ -15,6 +15,8 @@
   # sum(number): return the sum of distances for number
 
 # Both methods should work in O(1) time.
+
+# O(n)
 class DistanceTracker:
   def __init__(self):
     self.numbers = {}
@@ -45,6 +47,31 @@ class DistanceTracker:
       prefix_sum += val
 
     return sum
+  
+# O(1)
+class DistanceTracker:
+  def __init__(self):
+    self.prefix_sum = {}
+    self.count = {}
+    self.total_distance = {}
+    self.current_index = 0
+
+  def append(self, number):
+    if number not in self.count:
+      self.count[number] = 0
+      self.prefix_sum[number] = 0
+      self.total_distance[number] = 0
+
+    self.total_distance[number] += (
+      self.count[number] * self.current_index - self.prefix_sum[number]
+    )
+
+    self.count[number] += 1
+    self.prefix_sum[number] += self.current_index
+    self.current_index += 1
+
+  def sum(self, number):
+    return self.total_distance.get(number, 0)
 
 tracker = DistanceTracker()
 
