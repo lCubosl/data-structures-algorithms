@@ -3,7 +3,8 @@
 # For example, in the tree below, the desired list is [0, 0, 0, 0, 1, 2, 3]. The tree has four nodes that have no children. 
 # The node 2 has one child, the node 4 has two children, and the node 1 has three children.
 
-# In a file children.py, implement the function count_children that takes a reference to the root of a tree as parameter and returns the list of child counts.
+# In a file children.py, implement the function count_children that takes a reference to the root of a tree as parameter and 
+# returns the list of child counts.
 
 class Node:
   def __init__(self, value, children=None):
@@ -17,15 +18,15 @@ class Node:
       return f"Node({self.value}, {self.children})"
 
 def count_children(node):
-  children_counts = []
-  result = 1
+  counts = []
+  dfs(node, counts)
 
+  return sorted(counts)
+
+def dfs(node, counts):
+  counts.append(len(node.children))
   for child in node.children:
-    result += count_children(child)
-    children_counts.append(result)
-    print("children_counts:", children_counts)
-  
-  return result
+    dfs(child, counts)
 
 
 tree1 = Node(1, [Node(4, [Node(3), Node(7)]),
