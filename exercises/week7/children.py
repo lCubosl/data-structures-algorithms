@@ -17,6 +17,21 @@ class Node:
     else:
       return f"Node({self.value}, {self.children})"
 
+# original function to get depths, store them in a list and sort them  
+# def get_depths(node):
+#   depths = []
+#   get_depths_helper(node, 0, depths)
+#   return sorted(depths)
+
+# def get_depths_helper(node, depth, depths):
+#   depths.append(depth)
+#   for child in node.children:
+#     get_depths_helper(child, depth + 1, depths)
+  
+# tree = Node(1, [Node(4, [Node(3), Node(7)]),
+#                 Node(5),
+#                 Node(2, [Node(6)])])
+
 def count_children(node):
   counts = []
   dfs(node, counts)
