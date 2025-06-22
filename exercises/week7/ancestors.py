@@ -19,11 +19,22 @@ class Node:
     else:
       return f"Node({self.value}, {self.children})"
 
-def ancestor(node, a, b):
-  pass
+def ancestor_helper(root, target):
+  if root.value == target:
+    return True
+  
+  return any(ancestor_helper(child, target) for child in root.children)
 
-def ancestor_helper():
-  pass
+def ancestor(node, a, b):
+  if node.value == a:
+    return ancestor_helper(node, b)
+  
+  for child in node.children:
+    if ancestor(child, a, b):
+      return True
+  return False
+
+
 
 tree1 = Node(1, [Node(4, [Node(3), Node(7)]),
                   Node(5),
