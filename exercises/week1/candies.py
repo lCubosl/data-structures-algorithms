@@ -2,6 +2,7 @@
 # You may assume that a, b and c are integers in the range 1 ... 100.
 # In a file candies.py, implement the function count that returns the maximum number of candies.
 
+# O(n)
 def count(a, b, c):
   candies = 0
   candy_of_choice = min(a, b)
@@ -18,6 +19,13 @@ def count(a, b, c):
     #   c = 0
 
   return candies
+
+# O(1)
+def count(a, b, c):
+  # // removes decimal values
+  candies = c // min(a, b)
+  return candies
+
 
 print(count(3, 4, 11)) # 3
 print(count(5, 1, 100)) # 100
